@@ -5,26 +5,8 @@ export type userDocument = mongoose.Document & {
 	email: string;
 	password: string;
 	role: string;
-	name: {
-		firstname: string;
-		lastname: string;
-	};
 	phone: string;
 };
-
-const nameSchema = new mongoose.Schema(
-	{
-		firstname: {
-			type: String,
-			required: true,
-		},
-		lastname: {
-			type: String,
-			required: true,
-		},
-	},
-	{ _id: false }
-);
 
 const userSchema = new mongoose.Schema({
 	_id: {
@@ -44,10 +26,6 @@ const userSchema = new mongoose.Schema({
 	role: {
 		type: String,
 		enum: ['reciptionist', 'doctor','pharmacist', 'admin'],
-	},
-	name: {
-		type: nameSchema,
-		required: true,
 	},
 	phone: {
 		type: String,
