@@ -8,6 +8,7 @@ const specialtyContoller = new SpecialtyController();
 
 router
   .route("/specialty")
+  .get(specialtyContoller.getSpecialties)
   .post(
     [
       body("name").isString().withMessage("Name should be text!"),

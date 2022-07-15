@@ -46,4 +46,14 @@ export class SpecialtyController {
       next(error);
     }
   }
+
+  async getSpecialties(req: Request, res: Response, next: NextFunction) {
+    //-Pending Filter & Sort
+    try {
+      const specialties = await Specialty.find({});
+      res.json({ success: true, specialties });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
