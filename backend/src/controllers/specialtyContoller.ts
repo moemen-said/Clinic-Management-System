@@ -15,4 +15,21 @@ export class SpecialtyController {
       next(error);
     }
   }
+
+  async updateSpecialty(req: Request, res: Response, next: NextFunction) {
+    try {
+      const specialty = await Specialty.findByIdAndUpdate(
+        req.params.id,
+        req.body
+      );
+      if (!specialty)
+        throw new Error("Couldn't find specialty in the database!");
+
+      res
+        .status(200)
+        .json({ success: true, msg: "Specialty updated succesfully!" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
