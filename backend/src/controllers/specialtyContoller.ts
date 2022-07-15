@@ -32,4 +32,18 @@ export class SpecialtyController {
       next(error);
     }
   }
+
+  async removeSpecialty(req: Request, res: Response, next: NextFunction) {
+    try {
+      const specialty = await Specialty.findByIdAndDelete(req.params.id);
+      if (!specialty)
+        throw new Error("Couldn't find specialty in the database!");
+
+      res
+        .status(200)
+        .json({ success: true, msg: "Specialty deleted succesfully!" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

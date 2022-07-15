@@ -18,7 +18,7 @@ router
   );
 
 router
-  .route("/specialty:id")
+  .route("/specialty/:id")
   .put(
     [
       param("id").isMongoId().withMessage("Id should be a valid MongoID."),
@@ -30,5 +30,11 @@ router
     ],
     validationMW,
     specialtyContoller.updateSpecialty
+  )
+  .delete(
+    [param("id").isMongoId().withMessage("Id should be a valid MongoID.")],
+    validationMW,
+    specialtyContoller.removeSpecialty
   );
+
 export default router;
