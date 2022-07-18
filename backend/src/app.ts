@@ -1,11 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import specialtyRoutes from "./routes/specialtyRoute";
+import appointmentRoutes from "./routes/appointmentRoute";
 
 const app = express();
 
 app.use(express.json());
 
 app.use(specialtyRoutes);
+app.use(appointmentRoutes);
 
 // notfound middleware
 app.use((req, res, next) => {
