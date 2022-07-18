@@ -5,14 +5,14 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface doctorDocument {
 	userId: string;
 	specialtyId:string;
-	username: string;
+	name: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
 // export type doctorDocument = mongoose.Document & {
 // 	_id: mongoose.Types.ObjectId;
 // 	userId: mongoose.Types.ObjectId;
-// 	username: string;
+// 	name: string;
 // 	specialtyId: mongoose.Types.ObjectId;
 // 	createdAt: Date;
 // 	updatedAt: Date;
@@ -32,7 +32,7 @@ const doctorSchema: Schema = new Schema({
 			 ref: 'User' 
 			
 	},
-	username: {
+	name: {
 		type: String,
 		required: true,
 		unique: true,

@@ -12,12 +12,12 @@ export default class doctorController{
 
     
      createDoctor (req:Request,res:Response,next:NextFunction) {
-        const { userId,username,specialtyId } = req.body;
+        const { userId,name,specialtyId } = req.body;
 
         const Doc = new Doctor({
             _id: new mongoose.Types.ObjectId(),
             userId,
-            username,
+            name,
             specialtyId
         });
     
@@ -29,7 +29,7 @@ export default class doctorController{
 
      getAllDoctors (req:Request,res:Response,next:NextFunction) {
         return Doctor.find({})
-            .populate({path:"userId",options:{sort:{username:-1}}})
+            .populate({path:"userId",options:{sort:{name:-1}}})
             .then((data) => (data ? res.status(200).json({ data }) : res.status(404).json({ message: 'not found' })))
             .catch((error)=>next(error));
     }
