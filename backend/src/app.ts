@@ -1,4 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
+
+import patientRoutes from "./routes/patient";
 import specialtyRoutes from "./routes/specialtyRoute";
 
 const app = express();
@@ -6,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use(specialtyRoutes);
+new patientRoutes(app);
 
 // notfound middleware
 app.use((req, res, next) => {

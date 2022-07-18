@@ -46,7 +46,8 @@ const appointmentSchema = new mongoose.Schema({
 		ref: 'Specialty',
 	},
 	type: {
-		type: appointmentType,
+		type: String,
+		enum: ['Consultation', 'FollowUp'],
 		required: true,
 	},
 	previousAppointment: {
