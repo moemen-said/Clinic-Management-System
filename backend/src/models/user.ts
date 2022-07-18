@@ -1,4 +1,7 @@
-import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
+
+import mongoose, { Document, Schema } from 'mongoose';
+
 
 export type userDocument = mongoose.Document & {
 	_id: mongoose.Types.ObjectId;
@@ -11,6 +14,22 @@ export type userDocument = mongoose.Document & {
 	};
 	phone: string;
 };
+
+
+export interface UserDocument {
+	
+	email: string;
+	password: string;
+	role: string;
+	name: {
+		firstname: string;
+		lastname: string;
+	};
+	phone: string;
+}
+
+export interface IUserModel extends UserDocument, Document {}
+
 
 const nameSchema = new mongoose.Schema(
 	{
@@ -26,7 +45,7 @@ const nameSchema = new mongoose.Schema(
 	{ _id: false }
 );
 
-const userSchema = new mongoose.Schema({
+const userSchema: Schema = new Schema({
 	_id: {
 		type: mongoose.Types.ObjectId,
 		required: true,
@@ -55,4 +74,7 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
-export const User = mongoose.model<userDocument>('User', userSchema);
+// export const User = mongoose.model<userDocument>('User', userSchema);
+
+export default mongoose.model<IUserModel>('User', userSchema);
+

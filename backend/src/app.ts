@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
 
-
+import router from './routes/doctorRoute'
 const app = express();
 
 app.use(express.json());
-
-
+app.use(router);
 // notfound middleware
 app.use((req, res, next) => {
 	res.status(404).json({ success: false, message: 'your request url is NOT FOUND' });
