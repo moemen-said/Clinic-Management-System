@@ -1,3 +1,4 @@
+
 //import mongoose from 'mongoose';
 import mongoose, { Document, Schema } from 'mongoose';
 
@@ -26,11 +27,9 @@ const doctorSchema: Schema = new Schema({
 		auto: true,
 	},
 	userId: {
-		
 			type: Schema.Types.ObjectId, 
 			required: true,
 			 ref: 'User' 
-			
 	},
 	name: {
 		type: String,
@@ -50,3 +49,4 @@ const doctorSchema: Schema = new Schema({
 // export const Doctor = mongoose.model<IDoctorModel>('Doctor', doctorSchema);
 
 export default mongoose.model<IDoctorModel>('Doctor', doctorSchema);
+

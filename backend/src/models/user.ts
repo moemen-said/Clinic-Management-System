@@ -3,17 +3,14 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 
-export type userDocument = mongoose.Document & {
-	_id: mongoose.Types.ObjectId;
-	email: string;
-	password: string;
-	role: string;
-	name: {
-		firstname: string;
-		lastname: string;
-	};
-	phone: string;
-};
+\\export type userDocument = mongoose.Document & {
+\\	_id: mongoose.Types.ObjectId;
+\\	email: string;
+\\	password: string;
+\\ role: string;
+\\	phone: string;
+\\};
+
 
 
 export interface UserDocument {
@@ -63,10 +60,6 @@ const userSchema: Schema = new Schema({
 	role: {
 		type: String,
 		enum: ['reciptionist', 'doctor','pharmacist', 'admin'],
-	},
-	name: {
-		type: nameSchema,
-		required: true,
 	},
 	phone: {
 		type: String,
