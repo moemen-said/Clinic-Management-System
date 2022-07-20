@@ -72,9 +72,7 @@ appointmentSchema.pre("save", function (next) {
 appointmentSchema.methods.toJSON = function () {
   const appointment = this;
   const responseAppointment = appointment.toObject();
-  responseAppointment.date = new Date(appointment.date)
-    .toUTCString()
-    .replace(" GMT", "");
+  responseAppointment.date = new Date(appointment.date).toLocaleString();
   return responseAppointment;
 };
 
