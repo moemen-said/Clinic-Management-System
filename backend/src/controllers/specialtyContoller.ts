@@ -4,20 +4,27 @@ import { Specialty, specialtyDocument } from "../models/specialty";
 export class SpecialtyController {
   constructor() {}
 
-  async createSpecialty(req: Request, res: Response, next: NextFunction) {
+  async createSpecialty(req: any, res: Response, next: NextFunction) {
     try {
+      if (req.role !== "admin") {
+        throw new Error("Unauthorized Operation!");
+      }
       const newSpecialty: specialtyDocument = await new Specialty(req.body);
       await newSpecialty.save();
       res
         .status(201)
         .json({ success: true, msg: "Specialty created succesfully!" });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.msg === "Unautorized Operation!") error.status = 401;
       next(error);
     }
   }
 
-  async updateSpecialty(req: Request, res: Response, next: NextFunction) {
+  async updateSpecialty(req: any, res: Response, next: NextFunction) {
     try {
+      if (req.role !== "admin") {
+        throw new Error("Unauthorized Operation!");
+      }
       const specialty = await Specialty.findByIdAndUpdate(
         req.params.id,
         req.body
@@ -28,13 +35,17 @@ export class SpecialtyController {
       res
         .status(200)
         .json({ success: true, msg: "Specialty updated succesfully!" });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
 
-  async removeSpecialty(req: Request, res: Response, next: NextFunction) {
+  async removeSpecialty(req: any, res: Response, next: NextFunction) {
     try {
+      if (req.role !== "admin") {
+        throw new Error("Unauthorized Operation!");
+      }
       const specialty = await Specialty.findByIdAndDelete(req.params.id);
       if (!specialty)
         throw new Error("Couldn't find specialty in the database!");
@@ -42,7 +53,8 @@ export class SpecialtyController {
       res
         .status(200)
         .json({ success: true, msg: "Specialty deleted succesfully!" });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
@@ -52,7 +64,8 @@ export class SpecialtyController {
     try {
       const specialties = await Specialty.find({});
       res.json({ success: true, specialties });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
