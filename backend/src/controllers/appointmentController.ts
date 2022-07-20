@@ -92,11 +92,15 @@ export default class AppointmentController {
   }
 
   checkDoctorAppointmentsByDay = async (
-    req: Request,
+    req: any,
     res: Response,
     next: NextFunction
   ) => {
     try {
+
+      if (!req.role.match(/(doctor|reciptionist)/i)) {
+        throw new Error("Unauthorized Operation!");
+      }
       if (this.isOffDay(new Date(req.body.date)))
         throw new Error("The clinic is closed on Friday & Saturday");
 
@@ -112,17 +116,18 @@ export default class AppointmentController {
         throw new Error("No Appointments This Day!");
 
       res.json({ success: true, doctorAppointments });
-    } catch (error) {
+
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   };
 
-  createAppointment = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+
+  createAppointment = async (req: any, res: Response, next: NextFunction) => {
     try {
+      if (req.role !== "reciptionist")
+        throw new Error("Unauthorized Operation!");
       const requestDate = new Date(req.body.date);
 
       const currentDate = new Date();
@@ -160,17 +165,19 @@ export default class AppointmentController {
         success: true,
         msg: `Appointment created successfully at ${appointmentDate}`,
       });
-    } catch (error) {
+
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   };
 
-  updateAppointment = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+
+  updateAppointment = async (req: any, res: Response, next: NextFunction) => {
     try {
+      if (req.role !== "reciptionist")
+        throw new Error("Unauthorized Operation!");
+
       const requestDate = new Date(req.body.date);
 
       const currentDate = new Date();
@@ -206,19 +213,26 @@ export default class AppointmentController {
         success: true,
         msg: `Appointment Updated to ${nearstAppointment}`,
       });
-    } catch (error) {
+
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   };
 
-  async deleteAppointment(req: Request, res: Response, next: NextFunction) {
+
+  async deleteAppointment(req: any, res: Response, next: NextFunction) {
     try {
+      if (req.role !== "reciptionist")
+        throw new Error("Unauthorized Operation!");
       const appointment = await Appointment.findByIdAndRemove(
         req.body.appointmentId
       );
       if (!appointment) throw new Error("Couldn't find this appointment!");
       res.json({ success: true, msg: "Appointment Deleted Successfully!" });
-    } catch (error) {
+
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
