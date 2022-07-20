@@ -12,13 +12,14 @@ export default class doctorController{
 
     
      createDoctor (req:Request,res:Response,next:NextFunction) {
-        const { userId,name,specialtyId } = req.body;
+        const { userId,name,specialtyId,examinationPrice } = req.body;
 
         const Doc = new Doctor({
             _id: new mongoose.Types.ObjectId(),
             userId,
             name,
-            specialtyId
+            specialtyId,
+            examinationPrice
         });
     
         return Doc

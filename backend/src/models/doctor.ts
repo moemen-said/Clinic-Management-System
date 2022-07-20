@@ -42,7 +42,7 @@ const doctorSchema: Schema = new Schema(
 			ref: 'Specialty',
 		},
 		examinationPrice: {
-			type: mongoose.Types.ObjectId,
+			type: Number,
 			required: true,
 		},
 	},
