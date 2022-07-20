@@ -5,28 +5,13 @@ export type prescriptionDocument = mongoose.Document & {
 	patientId: mongoose.Types.ObjectId;
 	doctorId: mongoose.Types.ObjectId;
 	date: Date;
-	medicines: Array<{
-		name: string;
-		unit: string;
-		notes: string;
-	}>;
+	medicines: Array<mongoose.Types.ObjectId>;
 	notes: string;
 	createdAt: Date;
 	updatedAt: Date;
 };
 
-
-const medicineSchema = new mongoose.Schema(
-	{
-		name: {
-			type: String,
-			required: true,
-		},
-		unit: String,
-		notes: String,
-	},
-	{ _id: false }
-);
+// d
 
 const prescriptionSchema = new mongoose.Schema({
 	_id: {
@@ -42,24 +27,22 @@ const prescriptionSchema = new mongoose.Schema({
 	doctorId: {
 		type: mongoose.Types.ObjectId,
 		required: true,
-		ref: 'User',
+		ref: 'Doctor',
 	},
 	date: {
 		type: Date,
-		default: Date.now,
-		required: true,
+		default: Date.now
 	},
-	medicines: {
-		type: [medicineSchema],
-		required: true,
-	},
+	medicines: [{type: mongoose.Types.ObjectId, ref: "Medicine"}],
 	notes: {
 		type: String,
 		required: true,
 	},
 });
 
-export const Prescription = mongoose.model<prescriptionDocument>(
+ const Prescription = mongoose.model<prescriptionDocument>(
 	'Prescription',
 	prescriptionSchema
 );
+
+export default Prescription;

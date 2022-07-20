@@ -1,18 +1,18 @@
 import express, { NextFunction, Request, Response } from "express";
-
-import patientRoutes from "./routes/patient";
+// import patientRoutes from "./routes/patient";
 import specialtyRoutes from "./routes/specialtyRoute";
 import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
+import presRouter from './routes/prescription';
 
 const app = express();
 
 app.use(express.json());
-
+app.use(presRouter)
 app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(doctorRoutes);
-new patientRoutes(app);
+// new patientRoutes(app);
 
 // notfound middleware
 app.use((req, res, next) => {
