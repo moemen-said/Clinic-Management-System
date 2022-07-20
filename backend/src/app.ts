@@ -4,11 +4,13 @@ import specialtyRoutes from "./routes/specialtyRoute";
 import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
 import presRouter from './routes/prescription';
+import permissionRoute from './routes/permission'
 
 const app = express();
 
 app.use(express.json());
-app.use(presRouter)
+app.use(permissionRoute);
+app.use(presRouter);
 app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(doctorRoutes);
