@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 
 import patientRoutes from "./routes/patient";
 import specialtyRoutes from "./routes/specialtyRoute";
+import appointmentRoutes from "./routes/appointmentRoute";
 import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use(medicineRouter);
 app.use(specialtyRoutes);
+app.use(appointmentRoutes);
 app.use(doctorRoutes);
 new patientRoutes(app);
 
