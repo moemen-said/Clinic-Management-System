@@ -53,7 +53,7 @@ export class SpecialtyController {
       res
         .status(200)
         .json({ success: true, msg: "Specialty deleted succesfully!" });
-    } catch (error) {
+    } catch (error: any) {
       if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
@@ -64,7 +64,7 @@ export class SpecialtyController {
     try {
       const specialties = await Specialty.find({});
       res.json({ success: true, specialties });
-    } catch (error) {
+    } catch (error: any) {
       if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
