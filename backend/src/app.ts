@@ -4,6 +4,7 @@ import patientRoutes from "./routes/patientRoutes";
 import specialtyRoutes from "./routes/specialtyRoute";
 import appointmentRoutes from "./routes/appointmentRoute";
 import doctorRoutes from "./routes/doctorRoute";
+import employeeRoutes from "./routes/employee";
 import medicineRouter from "./routes/medicineRoute";
 import AuthRoutes from "./routes/authRoutes";
 
@@ -15,6 +16,7 @@ app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(appointmentRoutes);
 app.use(doctorRoutes);
+app.use(employeeRoutes);
 new patientRoutes(app);
 new AuthRoutes(app)
 
