@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import AppointmentController from "../controllers/appointmentController";
 import validationMW from "../middlewares/validationMW";
+
 import authMW from "../middlewares/isAuthenticated";
 
 const router = Router();
@@ -10,7 +11,9 @@ const appointmentController = new AppointmentController();
 router
   .route("/appointments")
   .get(
+
     authMW,
+
     [
       body("doctorId")
         .isMongoId()
@@ -21,6 +24,7 @@ router
     appointmentController.checkDoctorAppointmentsByDay
   )
   .post(
+
     authMW,
     [
       body("patientId")

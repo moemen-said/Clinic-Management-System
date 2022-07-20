@@ -8,6 +8,7 @@ export default class patientRoutes {
 	patientCtrl = new patientController();
 
 	constructor(app: Application) {
+
 		app.get('/patients', isAuthenticated, this.patientCtrl.getAllPatient);
 		app.route('/patient')
 			.get(isAuthenticated, validators.onGetPatientData, this.patientCtrl.getPatientDataById)
