@@ -44,19 +44,21 @@ export default class doctorController{
             .then((data) => (data ? res.status(200).json({ data }) : res.status(404).json({ message: 'not found' })))
             .catch((error)=>next(error));
     }
-    async getDoctorById (req:Request,res:Response,next:NextFunction) {
+    async getDoctorById (req:any,res:Response,next:NextFunction) {
         try {
           
-            const data = await Doctor.findById({_id:req.params.id})//.populate({path:"userId"});
+            const data = await Doctor.findOne({userId:req.id}).populate({path:"userId"});
+            console.log(req.id)
             res.status(200).json(data)
         } catch (error) {
             next(error);
         }
     }
 
-   async updateDoctor(req:Request,res:Response,next:NextFunction){
+   async updateDoctor(req:any,res:Response,next:NextFunction){
      const data:any = await Doctor.findOne({_id:req.params.id})
        if(data){
+        
         for (const property in req.body) {
             data[property] = req.body[property];
           }
@@ -67,7 +69,7 @@ export default class doctorController{
     }
 
 
-    async deleteDoctor(req:Request,res:Response,next:NextFunction){
+    async deleteDoctor(req:any,res:Response,next:NextFunction){
 
         try {
             const data = await Doctor.findByIdAndDelete({_id:req.params.id})

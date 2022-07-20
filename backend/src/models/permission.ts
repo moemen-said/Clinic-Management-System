@@ -19,10 +19,27 @@ const permissionSchmea = new mongoose.Schema({
 		required: true,
 		ref: 'User',
 	},
-    canAdd: {type: Boolean, default: false},
-    canUpdate: {type: Boolean, default: false},
-    canDelete: {type: Boolean, default: false}
-	
+    canAddPrescription: {type: Boolean, default: false},
+    canUpdatePrescription: {type: Boolean, default: false},
+    canDeletePrescription: {type: Boolean, default: false},
+    canAddAppointment: {type: Boolean, default: false},
+    canUpdateAppointment: {type: Boolean, default: false},
+    canDeleteAppointment: {type: Boolean, default: false},
+    canAddDoctor: {type: Boolean, default: false},
+    canUpdateDoctor: {type: Boolean, default: false},
+    canDeleteDoctor: {type: Boolean, default: false},
+    canAddEmployee: {type: Boolean, default: false},
+    canUpdateEmployee: {type: Boolean, default: false},
+    canDeleteEmployee: {type: Boolean, default: false},
+    canAddInvoice: {type: Boolean, default: false},
+    canUpdateInvoice: {type: Boolean, default: false},
+    canDeleteInvoice: {type: Boolean, default: false},
+    canAddMedicine: {type: Boolean, default: false},
+    canUpdateMedicine: {type: Boolean, default: false},
+    canDeleteMedicine: {type: Boolean, default: false},
+    canAddSpeciality: {type: Boolean, default: false},
+    canUpdateSpeciality: {type: Boolean, default: false},
+    canDeleteSpeciality: {type: Boolean, default: false},	
 });
 
  const Permission = mongoose.model<permissionDocument>(
