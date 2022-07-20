@@ -15,7 +15,7 @@ export class SpecialtyController {
         .status(201)
         .json({ success: true, msg: "Specialty created succesfully!" });
     } catch (error: any) {
-      if (error.msg === "Unautorized Operation!") error.status = 403;
+      if (error.msg === "Unautorized Operation!") error.status = 401;
       next(error);
     }
   }
@@ -35,7 +35,8 @@ export class SpecialtyController {
       res
         .status(200)
         .json({ success: true, msg: "Specialty updated succesfully!" });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
@@ -53,6 +54,7 @@ export class SpecialtyController {
         .status(200)
         .json({ success: true, msg: "Specialty deleted succesfully!" });
     } catch (error) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
@@ -63,6 +65,7 @@ export class SpecialtyController {
       const specialties = await Specialty.find({});
       res.json({ success: true, specialties });
     } catch (error) {
+      if (error.msg === "Unauthorized Operation!") error.status = 401;
       next(error);
     }
   }
