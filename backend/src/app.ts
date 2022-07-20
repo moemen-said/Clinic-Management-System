@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-// import patientRoutes from "./routes/patient";
+import patientRoutes from "./routes/patient";
 import specialtyRoutes from "./routes/specialtyRoute";
 import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
