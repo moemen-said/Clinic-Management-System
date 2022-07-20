@@ -3,7 +3,7 @@ import { Router,Request,Response } from "express";
 import employeeController from "../controllers/employeController";
 import { body, param } from "express-validator";
 import validationMW from "../middlewares/validationMW";
-import isAuthenticated from "../middlewares/isAuthenticated"
+import isAuthenticated from "../middlewares/isAuthenticated";
 
 const EmployeeController = new employeeController();
 

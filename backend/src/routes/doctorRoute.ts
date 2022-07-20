@@ -3,6 +3,7 @@ import doctorController from "../controllers/doctorController";
 import { body, param } from "express-validator";
 import validationMW from "../middlewares/validationMW";
 import isAuthenticated from "../middlewares/isAuthenticated"
+import {addDoctorPermMW,updateDoctorPermMW,deleteDoctorPermMW} from "../middlewares/permissionMW"
 
 const DoctorController = new doctorController();
 const router = Router();
@@ -38,7 +39,7 @@ router.post('/doctors',[
 ,
     body("specialtyId").isMongoId().withMessage("specialtyId should be a valid MongoID."),
     body("examinationPrice").isNumeric().withMessage("examinationPrice should be number!"),
-],isAuthenticated,validationMW,DoctorController.createDoctor);
+],isAuthenticated,addDoctorPermMW,validationMW,DoctorController.createDoctor);
 
 router.put('/doctors/:id',[
     param("id").isMongoId().withMessage("id should be a valid MongoID."),
@@ -46,8 +47,8 @@ router.put('/doctors/:id',[
     body("name").isString().withMessage("Name should be text!"),
     body("specialtyId").isMongoId().withMessage("specialtyId should be a valid MongoID."),
     body("examinationPrice").isNumeric().withMessage("examinationPrice should be number!"),
-],isAuthenticated,validationMW,DoctorController.updateDoctor);
+],isAuthenticated,updateDoctorPermMW,validationMW,DoctorController.updateDoctor);
 router.delete('/doctors/:id',param("id").isMongoId().withMessage("params id should be mongo id"),
-isAuthenticated,validationMW,DoctorController.deleteDoctor);
+isAuthenticated,deleteDoctorPermMW,validationMW,DoctorController.deleteDoctor);
 
 export default router;

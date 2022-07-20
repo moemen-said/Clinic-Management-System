@@ -7,8 +7,10 @@ import doctorRoutes from "./routes/doctorRoute";
 import employeeRoutes from "./routes/employee";
 import medicineRouter from "./routes/medicineRoute";
 
+
 import presRouter from "./routes/prescription";
 import permissionRoute from "./routes/permission";
+
 
 import AuthRoutes from "./routes/authRoutes";
 import invoiceRouter from "./routes/invoiceRoute";
