@@ -5,6 +5,7 @@ import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
 import presRouter from './routes/prescription';
 import permissionRoute from './routes/permission'
+import AuthRoutes from "./routes/authRoutes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(doctorRoutes);
 new patientRoutes(app);
+new AuthRoutes(app)
 
 // notfound middleware
 app.use((req, res, next) => {
