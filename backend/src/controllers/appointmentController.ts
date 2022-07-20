@@ -3,6 +3,7 @@ import { Appointment, appointmentDocument } from "../models/Appointment";
 import Doctor from "../models/doctor";
 import moment from "moment";
 
+
 export default class AppointmentController {
   constructor() {}
   /*  APPOINTMENT RULES

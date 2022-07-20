@@ -3,10 +3,10 @@ import Permission from "../models/permission";
 
 
 
-
 export const addDoctorPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !== null && data.canAddDoctor) {
         next();
     } else {
@@ -18,9 +18,11 @@ export const addDoctorPermMW = (req: any, res: Response, next: NextFunction) => 
 }
 
 
+
 export const updateDoctorPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !== null && data.canUpdateDoctor) {
         next();
     } else {
@@ -35,6 +37,7 @@ export const updateDoctorPermMW = (req: any, res: Response, next: NextFunction) 
 export const deleteDoctorPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !== null && data.canDeleteDoctor) {
         next();
     } else {
@@ -49,7 +52,7 @@ export const deleteDoctorPermMW = (req: any, res: Response, next: NextFunction) 
 export const addPrescriptionPermMW = (req: any, res: Response, next: NextFunction) => {
 
   console.log("presc is working -------------------------------")
-  Permission.findOne({userId: req.id}).then((data:any) => {
+  Permission.findOne({userId: "62d08b33b8b8d89c7b10795a"}).then((data:any) => {
   
     console.log(data,"-----------------")
     if(data !== null && data.canAddPrescription) {
@@ -66,7 +69,7 @@ export const addPrescriptionPermMW = (req: any, res: Response, next: NextFunctio
 export const updatePrescriptionPermMW = (req: any, res: Response, next: NextFunction) => {
 
   console.log("update mw is working")
-  Permission.findOne({userId: req.id}).then((data:any) => {
+  Permission.findOne({userId: "62d8626ea87d2d547f6b43da"}).then((data:any) => {
     console.log("last Data = > ", data)
     if(data !== null && data.canUpdatePrescription) {
         next();
@@ -79,9 +82,11 @@ export const updatePrescriptionPermMW = (req: any, res: Response, next: NextFunc
 }
 
 
+
 export const deletePrescriptionPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canDeletePrescription) {
         next();
     } else {
@@ -96,6 +101,7 @@ export const deletePrescriptionPermMW = (req: any, res: Response, next: NextFunc
 export const addInvoicePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canAddInvoice) {
         next();
     } else {
@@ -106,9 +112,11 @@ export const addInvoicePermMW = (req: any, res: Response, next: NextFunction) =>
   })
 }
 
+
 export const updateInvoicePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canUpdateInvoice) {
         next();
     } else {
@@ -123,6 +131,7 @@ export const updateInvoicePermMW = (req: any, res: Response, next: NextFunction)
 export const deleteInvoicePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canDeleteInvoice) {
         next();
     } else {
@@ -136,6 +145,7 @@ export const deleteInvoicePermMW = (req: any, res: Response, next: NextFunction)
 export const addMedicinePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canAddMedicine) {
         next();
     } else {
@@ -150,6 +160,7 @@ export const addMedicinePermMW = (req: any, res: Response, next: NextFunction) =
 export const updateMedicinePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canUpdateMedicine) {
         next();
     } else {
@@ -164,6 +175,7 @@ export const updateMedicinePermMW = (req: any, res: Response, next: NextFunction
 export const deleteMedicinePermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canDeleteMedicine) {
         next();
     } else {
@@ -177,6 +189,7 @@ export const deleteMedicinePermMW = (req: any, res: Response, next: NextFunction
 export const addSpecialityPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canAddSpeciality) {
         next();
     } else {
@@ -191,6 +204,7 @@ export const addSpecialityPermMW = (req: any, res: Response, next: NextFunction)
 export const updateSpecialityPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canUpdateSpeciality) {
         next();
     } else {
@@ -205,6 +219,7 @@ export const updateSpecialityPermMW = (req: any, res: Response, next: NextFuncti
 export const deleteSpecialityPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canDeleteSpeciality) {
         next();
     } else {
@@ -219,6 +234,7 @@ export const deleteSpecialityPermMW = (req: any, res: Response, next: NextFuncti
 export const addAppointmentPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canAddAppointment) {
         next();
     } else {
@@ -229,9 +245,11 @@ export const addAppointmentPermMW = (req: any, res: Response, next: NextFunction
   })
 }
 
+
 export const updateAppointmentPermMW = (req: any, res: Response, next: NextFunction) => {
 
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data !==null && data.canUpdateAppointment) {
         next();
     } else {
@@ -244,8 +262,8 @@ export const updateAppointmentPermMW = (req: any, res: Response, next: NextFunct
 
 
 export const deleteAppointmentPermMW = (req: any, res: Response, next: NextFunction) => {
-
   Permission.findOne({userId: req.id}).then((data:any) => {
+
     if(data.canDeleteAppointment) {
         next();
     } else {
