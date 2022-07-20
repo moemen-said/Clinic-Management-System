@@ -19,7 +19,7 @@ export default class MedicineController {
     Medicine.find(filter)
       .populate("name")
       .sort(sort)
-      .then((data) => res.status(200).json({ data }))
+      .then((data) => res.status(200).json({ status: "success", data }))
       .catch((err) => next(err));
   }
 
@@ -28,7 +28,9 @@ export default class MedicineController {
     newMedicine
       .save()
       .then((data) =>
-        res.status(200).json({ msg: "new medicine created", newMedicine })
+        res
+          .status(200)
+          .json({ status: "success", message: "new medicine created" })
       )
       .catch((err) => next(err));
   }
@@ -41,11 +43,9 @@ export default class MedicineController {
             data[prop] = req.body[prop];
           }
           return data.save().then((data: medicineDocument) => {
-            res.status(200).json({
-              message: "medicine updated",
-              data: data,
-              update: req.body,
-            });
+            res
+              .status(200)
+              .json({ status: "success", message: "medicine updated" });
           });
         }
       })
@@ -56,7 +56,9 @@ export default class MedicineController {
     Medicine.deleteOne({ _id: req.params.id })
       .then((data) => {
         if (data) {
-          res.status(200).json({ data });
+          res
+            .status(200)
+            .json({ status: "success", message: " medicine deleted" });
         }
       })
       .catch((err) => next(err));
