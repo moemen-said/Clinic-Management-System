@@ -3,13 +3,13 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 
-\\export type userDocument = mongoose.Document & {
-\\	_id: mongoose.Types.ObjectId;
-\\	email: string;
-\\	password: string;
-\\ role: string;
-\\	phone: string;
-\\};
+// \\export type userDocument = mongoose.Document & {
+// \\	_id: mongoose.Types.ObjectId;
+// \\	email: string;
+// \\	password: string;
+// \\ role: string;
+// \\	phone: string;
+// \\};
 
 
 

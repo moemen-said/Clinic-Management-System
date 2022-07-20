@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-enum invoiceType {
+enum invoicePaymentType {
 	Cash = 'Cash',
 	Credit = 'Credit',
 	Insurance = 'Insurance',
@@ -9,7 +9,7 @@ enum invoiceType {
 export type invoiceDocument = mongoose.Document & {
 	_id: mongoose.Types.ObjectId;
 	patientId: mongoose.Types.ObjectId;
-	type: invoiceType;
+	type: invoicePaymentType;
 	amount: Number;
 	createdAt: Date;
 	updatedAt: Date;
@@ -26,15 +26,33 @@ const invoiceSchema = new mongoose.Schema({
 		required: true,
 		ref: 'Patient',
 	},
-	type: {
+	doctorId:{
+		type:mongoose.Types.ObjectId,
+		required:true,
+		ref:'Doctor'
+	},
+	specialtyId:{
+		type:mongoose.Types.ObjectId,
+		required:true,
+		ref:'Specialty'
+	},
+	paymentType: {
 		type: String,
-		enum: [invoiceType.Cash, invoiceType.Credit, invoiceType.Insurance],
+		enum: [invoicePaymentType.Cash, invoicePaymentType.Credit, invoicePaymentType.Insurance],
 		required: true,
 	},
-	amount: {
+	amount: { // doctor examinationPrice
 		type: Number,
 		required: true,
 	},
+	discount:{ // insurance percentage * doctor examinationPrice
+		type: Number,
+		required: false,
+	},
+	amountAfterDiscount:{ 
+		type: Number,
+		required: false,
+	}
 });
 
 export const Invoice = mongoose.model<invoiceDocument>('Invoice', invoiceSchema);

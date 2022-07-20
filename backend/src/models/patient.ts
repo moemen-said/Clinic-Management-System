@@ -2,13 +2,15 @@ import mongoose from 'mongoose';
 
 export type patientDocument = mongoose.Document & {
 	_id: mongoose.Types.ObjectId;
-	name:string;
+	name: string;
 	email: string;
 	phone: string;
+	haveInsurance:boolean;
+	insuranceCompany?:string;
+	insuranceDiscount?:number;
 	createdAt: Date;
 	updatedAt: Date;
 };
-
 
 const patientSchema = new mongoose.Schema({
 	_id: {
@@ -16,9 +18,9 @@ const patientSchema = new mongoose.Schema({
 		required: true,
 		auto: true,
 	},
-	name:{
-		type:String,
-		required:true
+	name: {
+		type: String,
+		required: true,
 	},
 	email: {
 		type: String,
@@ -27,6 +29,19 @@ const patientSchema = new mongoose.Schema({
 	phone: {
 		type: String,
 		required: true,
+	},
+	haveInsurance: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	insuranceCompany: {
+		type: String,
+		required: false,
+	},
+	insuranceDiscount: {
+		type: Number,
+		required: false,
 	},
 });
 
