@@ -164,4 +164,50 @@ export default class AppointmentController {
       next(error);
     }
   };
+
+  updateAppointment = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const requestDate = new Date(req.body.date);
+
+      const currentDate = new Date();
+      if (moment(requestDate).isBefore(currentDate))
+        throw new Error("Cannot set an appointment on a day from the past!");
+
+      if (this.isOffDay(requestDate))
+        throw new Error("The clinic is closed on Friday & Saturday");
+
+      const doctor = await Doctor.findById(req.body.doctorId);
+      if (!doctor) throw new Error("There is no doctor with that ID!");
+
+      const doctorAppointments = await this.getDoctorAppointmentsOnDay(
+        requestDate,
+        req.body.doctorId
+      );
+      const nearstAppointment = this.findNearestDate(
+        requestDate,
+        doctorAppointments
+      );
+
+      const updatedAppointment = await Appointment.findById(
+        req.body.appointmentId
+      );
+
+      if (!updatedAppointment)
+        throw new Error("There is no appointment with that id!");
+
+      updatedAppointment.date = new Date(nearstAppointment);
+      await updatedAppointment.save();
+
+      res.json({
+        success: true,
+        msg: `Appointment Updated to ${nearstAppointment}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

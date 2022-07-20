@@ -40,6 +40,20 @@ router
     ],
     validationMW,
     appointmentController.createAppointment
+  )
+  .put(
+    [
+      body("appointmentId")
+        .isMongoId()
+        .withMessage("Appointment's ID Should be a valid MongoID!"),
+
+      body("doctorId")
+        .isMongoId()
+        .withMessage("Doctor's ID Should be a valid MongoID!"),
+      body("date").isDate().withMessage("Please provide a valid date format!"),
+    ],
+    validationMW,
+    appointmentController.updateAppointment
   );
 
 export default router;
