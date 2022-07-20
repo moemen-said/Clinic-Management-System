@@ -3,7 +3,8 @@ import { SortOrder } from 'mongoose';
 
 import { Patient } from '../models/patient';
 import { Appointment, appointmentDocument } from '../models/Appointment';
-import { Prescription, prescriptionDocument } from '../models/prescription';
+
+import Prescription, {prescriptionDocument } from '../models/prescription';
 import { Invoice, invoiceDocument } from '../models/invoice';
 
 export default class patientController {
