@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 export type employeeDocument = mongoose.Document & {
 	_id: mongoose.Types.ObjectId;
 	userId: mongoose.Types.ObjectId;

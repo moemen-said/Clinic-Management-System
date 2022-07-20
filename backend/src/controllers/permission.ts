@@ -6,14 +6,43 @@ require("../models/user")
 require("../models/permission")
 
 export const createPermission: RequestHandler = (req, res, next) => {
+    console.log("working")
     let permission = new Permission({
         userId: req.body.userId,
-        canUpdate: req.body.canUpdate,
-        canDelete: req.body.canDelete
+        canAddPrescription: req.body.canAddPrescription,
+        canDeletePrescription: req.body.canDeletePrescription,
+        canUpdatePrescription: req.body.canUpdatePrescription,
+        
+        canAddAppointment: req.body.canAddAppointment,
+        canDeleteAppointment: req.body.canDeleteAppointment,
+        canUpdateAppointment: req.body.canUpdateAppointment,
+
+        canAddDoctor: req.body.canAddDoctor,
+        canDeleteDoctor: req.body.canDeleteDoctor,
+        canUpdateDoctor: req.body.canUpdateDoctor,
+        
+        canAddEmployee: req.body.canAddEmployee,
+        canDeleteEmployee: req.body.canDeleteEmployee,
+        canUpdateEmployee: req.body.canUpdateEmployee,
+        
+        canAddInvoice: req.body.canAddInvoice,
+        canDeleteInvoice: req.body.canDeleteInvoice,
+        canUpdateInvoice: req.body.canUpdateInvoice,
+        
+        canAddMedicine: req.body.canAddMedicine,
+        canDeleteMedicine: req.body.canDeleteMedicine,
+        canUpdateMedicine: req.body.canUpdateMedicine,
+        
+        canAddSpeciality: req.body.canAddSpeciality,
+        canDeleteSpeciality: req.body.canDeleteSpeciality,
+        canUpdateSpeciality: req.body.canUpdateSpeciality,
+
     });
+
     permission.save().then(data => {
         res.status(200).json({success:true, message:"added"});
     }).catch(err => {
+        console.log("error- >>>>>>>", err)
         res.status(402).json({success:false, message: "error "})
         next(err)
     })

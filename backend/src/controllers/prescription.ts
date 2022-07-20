@@ -47,3 +47,20 @@ export const deletePrescription: RequestHandler = (req, res, next) => {
         next(err)
     })
 }
+
+export const updatePrescription: RequestHandler = (req, res, next) => {
+    Prescription.findOne({_id: req.body.id}).then((data:any) => {
+        if(!data) {
+            res.status(404).json({success:false, message: "can't find perm"})
+        } else {
+            for(let prop in req.body) {
+                data[prop] = req.body[prop]
+            }
+            return data.save().then(() => {
+             res.status(201).json({sucess: true, message: "updated successfully"})
+            })
+        }
+    }).catch(err => {
+        next(err)
+    })
+}
