@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { Appointment, appointmentDocument } from "../models/Appointment";
 import { Doctor } from "../models/doctor";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 export default class AppointmentController {
   constructor() {}
+  /*  APPOINTMENT RULES
+       -Cannot add two Appointments at the same time to one doctor.
+       -Clinc Working hours start from 10 AM to 6 PM (No Work on Friday & Saturday) 
+       -Doctors get 16 appointments a day, half an hour each.
+       */
 
   private async getDoctorAppointmentsOnDay(date: Date, doctorId: String) {
     const startOfDay = moment(date).startOf("day").toDate();
@@ -24,6 +29,66 @@ export default class AppointmentController {
 
   private isOffDay(date: Date): Boolean {
     return date.toDateString().match(/^(fri|sat)/i) !== null ? true : false;
+  }
+
+  private findNearestDate(
+    date: Date,
+    doctorAppointments: appointmentDocument[]
+  ) {
+    //-First Case: if nearst appointment is available 10 AM
+    const firstAppointmentDate = moment(date).hours(10).minutes(0);
+    if (
+      doctorAppointments.length === 0 ||
+      !moment(doctorAppointments[0].date)
+        .subtract(2, "hours")
+        .isSame(firstAppointmentDate)
+    )
+      return firstAppointmentDate.toDate().toLocaleString();
+
+    //-Second Case: if neasrt appointment is available 5.30 PM
+    const lastAppointmentDate = moment(date).hours(17).minutes(30);
+    if (
+      doctorAppointments.length === 15 &&
+      !moment(doctorAppointments[14].date)
+        .subtract(2, "hours")
+        .isSame(lastAppointmentDate)
+    )
+      return lastAppointmentDate.toDate().toLocaleString();
+
+    //-Third Case: an appointment in the middle of the day
+    //-Since the array is sorted, we can use binary search
+    let startIndex = 0;
+    let endIndex = doctorAppointments.length - 1;
+    while (startIndex <= endIndex) {
+      const middleIndex = Math.floor((startIndex + endIndex) / 2);
+
+      /*Correct Date should be:  Hours = Index + 10 , Minutes = (-30 * Index)
+      example: fifth appointment  {Hours: 4 + 10 = 14} {Minutes: -30 * 4 = -120}, then fourth appointment is 12:00   
+      */
+      const correctDate = moment(date)
+        .hours(middleIndex + 10)
+        .subtract(30 * middleIndex, "minutes");
+
+      const currentDate = moment(doctorAppointments[middleIndex].date).subtract(
+        2,
+        "hours"
+      ); //-Subtract 2 hours cause of mongo-date issue
+
+      if (moment(currentDate).isSame(correctDate)) {
+        //Go right
+        startIndex = middleIndex + 1;
+      } else {
+        //Go left
+        endIndex = middleIndex - 1;
+      }
+    }
+    const nearstDate = moment(date)
+      .hours(10 + startIndex)
+      .subtract(30 * startIndex, "minutes");
+    if (nearstDate.isAfter(moment(date).hours(17).minutes(30)))
+      throw new Error("This day is full, try another day!");
+
+    return nearstDate.toDate().toLocaleString();
   }
 
   checkDoctorAppointmentsByDay = async (
@@ -58,55 +123,33 @@ export default class AppointmentController {
     next: NextFunction
   ) => {
     try {
-      if (this.isOffDay(new Date(req.body.date)))
+      const requestDate = new Date(req.body.date);
+
+      const currentDate = new Date();
+      if (moment(requestDate).isBefore(currentDate))
+        throw new Error("Cannot set an appointment on a day from the past!");
+
+      if (this.isOffDay(requestDate))
         throw new Error("The clinic is closed on Friday & Saturday");
 
       const doctor = await Doctor.findById(req.body.doctorId);
       if (!doctor) throw new Error("There is no doctor with that ID");
 
-      const currentDate = new Date();
-      const requestDate = new Date(req.body.date);
-      if (moment(requestDate).isBefore(currentDate))
-        throw new Error("Cannot set an appointment on a day from the past!");
-
-      /* ADDING APPOINTMENT
-       -Cannot add two Appointments at the same time to one doctor.
-       -Clinc Working hours start from 10 AM to 6 PM (No Work on Friday & Saturday) 
-       -Doctors get 16 appointments a day, half an hour each.
-       */
-
       const doctorAppointments = await this.getDoctorAppointmentsOnDay(
-        new Date(req.body.date),
+        requestDate,
         req.body.doctorId
       );
 
-      let appointmentDate: Date;
-      switch (doctorAppointments.length) {
-        case 0:
-          //-Doctor has no appointments yet on this day, create first appointment of the day at 10:00:00 AM.
-          appointmentDate = moment(new Date(req.body.date))
-            .hour(10)
-            .minute(0)
-            .second(0)
-            .toDate();
-          break;
+      if (doctorAppointments.length === 16)
+        return res.json({
+          success: "false",
+          msg: "This day is full, Try the next day!",
+        });
 
-        case 16:
-          return res.json({
-            success: "false",
-            msg: "This day is full, Try the next day!",
-          });
-
-        default:
-          //-Doctor has 1 or more appointments, get last one and add 30minutes
-          const lastAppointmentThisDay =
-            doctorAppointments[doctorAppointments.length - 1].date;
-          //-Date is returned as GMT+2, Subtract 2 hours to convert it to GMT
-          appointmentDate = moment(lastAppointmentThisDay)
-            .subtract(2, "hours")
-            .add(30, "minutes")
-            .toDate();
-      }
+      let appointmentDate = this.findNearestDate(
+        requestDate,
+        doctorAppointments
+      );
 
       let requestData = { ...req.body };
       requestData.date = appointmentDate;
@@ -115,9 +158,7 @@ export default class AppointmentController {
 
       res.json({
         success: true,
-        msg: `Appointment created successfully at ${appointmentDate
-          .toUTCString()
-          .replace(" GMT", "")}`,
+        msg: `Appointment created successfully at ${appointmentDate}`,
       });
     } catch (error) {
       next(error);
