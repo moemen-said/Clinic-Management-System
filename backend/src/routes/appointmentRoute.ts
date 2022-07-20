@@ -54,6 +54,15 @@ router
     ],
     validationMW,
     appointmentController.updateAppointment
+  )
+  .delete(
+    [
+      body("appointmentId")
+        .isMongoId()
+        .withMessage("Appointment's ID Should be a valid MongoID!"),
+    ],
+    validationMW,
+    appointmentController.deleteAppointment
   );
 
 export default router;

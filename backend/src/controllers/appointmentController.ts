@@ -210,4 +210,16 @@ export default class AppointmentController {
       next(error);
     }
   };
+
+  async deleteAppointment(req: Request, res: Response, next: NextFunction) {
+    try {
+      const appointment = await Appointment.findByIdAndRemove(
+        req.body.appointmentId
+      );
+      if (!appointment) throw new Error("Couldn't find this appointment!");
+      res.json({ success: true, msg: "Appointment Deleted Successfully!" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
