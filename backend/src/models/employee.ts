@@ -1,28 +1,39 @@
-import mongoose from 'mongoose';
-export type employeeDocument = mongoose.Document & {
-	_id: mongoose.Types.ObjectId;
-	userId: mongoose.Types.ObjectId;
+import mongoose, { Document, Schema } from 'mongoose';
+
+export interface employeeDocument {
+	userId: string;
+	specialtyId: string;
 	name: string;
+	examinationPrice:number;
 	createdAt: Date;
 	updatedAt: Date;
-};
+}
 
-const employeeSchema = new mongoose.Schema({
-	_id: {
-		type: mongoose.Types.ObjectId,
-		required: true,
-		auto: true,
-	},
-	userId: {
-		type: mongoose.Types.ObjectId,
-		required: true,
-		ref:'User'
-	},
-	name: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-});
+export interface IEmployeeModel extends employeeDocument, Document {}
 
-export const Employee = mongoose.model<employeeDocument>('Employee', employeeSchema);
+
+const employeeSchema: Schema = new Schema(
+	{
+		_id: {
+			type: mongoose.Types.ObjectId,
+			required: true,
+			auto: true,
+		},
+		userId: {
+			type: Schema.Types.ObjectId,
+			required: true,
+			ref: 'User',
+		},
+		name: {
+			type: String,
+			required: true,
+			unique: true,
+		}
+
+	},
+	{
+		timestamps: true,
+	}
+);
+
+export default mongoose.model<IEmployeeModel>('Employee', employeeSchema);
