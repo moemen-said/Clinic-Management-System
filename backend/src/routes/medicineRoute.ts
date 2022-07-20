@@ -2,6 +2,7 @@ import { Router } from "express";
 import MedicineController from "../controllers/medicineController";
 import validationMW from "../middlewares/validationMW";
 import { body, param } from "express-validator";
+import isAuthenticated from "../middlewares/isAuthenticated";
 
 const router = Router();
 
@@ -9,8 +10,9 @@ const medicineController = new MedicineController();
 
 router
   .route("/medicines")
-  .get(medicineController.getMedicine)
+  .get(isAuthenticated, medicineController.getMedicine)
   .post(
+    isAuthenticated,
     [
       body("name").isString().withMessage("medicine name should be characters"),
       body("unit").isString().withMessage("medicine unit should be characters"),
@@ -30,6 +32,7 @@ router
     medicineController.createMedicine
   )
   .put(
+    isAuthenticated,
     [
       body("id").isMongoId().withMessage("medicine id should be mongo id"),
       body("name")
@@ -65,6 +68,7 @@ router
 router
   .route("/medicines/:id")
   .delete(
+    isAuthenticated,
     param("id").isMongoId().withMessage("medicine id should be mongo id"),
     validationMW,
     medicineController.removeMedicine

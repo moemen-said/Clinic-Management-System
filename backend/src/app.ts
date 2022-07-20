@@ -7,10 +7,13 @@ import doctorRoutes from "./routes/doctorRoute";
 import employeeRoutes from "./routes/employee";
 import medicineRouter from "./routes/medicineRoute";
 
-import presRouter from './routes/prescription';
-import permissionRoute from './routes/permission'
+
+import presRouter from "./routes/prescription";
+import permissionRoute from "./routes/permission";
+
 
 import AuthRoutes from "./routes/authRoutes";
+import invoiceRouter from "./routes/invoiceRoute";
 
 const app = express();
 
@@ -22,8 +25,9 @@ app.use(specialtyRoutes);
 app.use(appointmentRoutes);
 app.use(doctorRoutes);
 app.use(employeeRoutes);
+app.use(invoiceRouter);
 new patientRoutes(app);
-new AuthRoutes(app)
+new AuthRoutes(app);
 
 // notfound middleware
 app.use((req, res, next) => {
