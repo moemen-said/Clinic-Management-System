@@ -1,7 +1,9 @@
 import {Request,Response,NextFunction } from "express";
 import mongoose from 'mongoose';
-require("../models/user")
+import { body, param } from "express-validator";
 
+require("../models/user")
+require("../models/specialty")
 // import {doctorDocument,Doctor} from "../models/doctor";
 import Doctor from '../models/doctor';
 //import User from '../models/user'
@@ -11,25 +13,34 @@ export default class doctorController{
     constructor(){ }
 
     
-     createDoctor (req:Request,res:Response,next:NextFunction) {
-        const { userId,name,specialtyId } = req.body;
-
-        const Doc = new Doctor({
-            _id: new mongoose.Types.ObjectId(),
-            userId,
-            name,
-            specialtyId
-        });
-    
-        return Doc
-            .save()
-            .then((Doc) => res.status(201).json({ Doc }))
-            .catch((error) => res.status(500).json({ error }));
+    async createDoctor (req:Request,res:Response,next:NextFunction) {
+        const { userId,name,specialtyId,examinationPrice } = req.body;
+        const data:any = await Doctor.findOne({name:name})
+        try {
+            if(!data){
+                const Doc = new Doctor({
+                    _id: new mongoose.Types.ObjectId(),
+                    userId,
+                    name,
+                    specialtyId,
+                    examinationPrice
+                });
+                await Doc.save()
+                res.status(201).json({Message:"added",Doc})
+            }
+            else{
+                throw new Error('name should be unique')
+            }
+        } catch (error) {
+            next(error)
+            
+        }
+     
     }
 
      getAllDoctors (req:Request,res:Response,next:NextFunction) {
         return Doctor.find({})
-            .populate({path:"userId",options:{sort:{name:-1}}})
+            .populate({path:"userId",options:{sort:{name:-1}},select:{_id:0,email:1}}).populate({path:"specialtyId",select:{_id:0,name:1}})
             .then((data) => (data ? res.status(200).json({ data }) : res.status(404).json({ message: 'not found' })))
             .catch((error)=>next(error));
     }
