@@ -1,15 +1,16 @@
-/**CREATE UPDATE REMOVE READ(WITH FILTERS & SORTING) */
 import { Router } from "express";
 const router = Router();
 import { SpecialtyController } from "../controllers/specialtyContoller";
 import { body, param } from "express-validator";
 import validationMW from "../middlewares/validationMW";
 const specialtyContoller = new SpecialtyController();
+import authMW from "../middlewares/isAuthenticated";
 
 router
   .route("/specialty")
   .get(specialtyContoller.getSpecialties)
   .post(
+    authMW,
     [
       body("name").isString().withMessage("Name should be text!"),
       body("description").isString().withMessage("Description should be text!"),
@@ -21,6 +22,7 @@ router
 router
   .route("/specialty/:id")
   .put(
+    authMW,
     [
       param("id").isMongoId().withMessage("Id should be a valid MongoID."),
       body("description")
@@ -33,6 +35,7 @@ router
     specialtyContoller.updateSpecialty
   )
   .delete(
+    authMW,
     [param("id").isMongoId().withMessage("Id should be a valid MongoID.")],
     validationMW,
     specialtyContoller.removeSpecialty
