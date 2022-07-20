@@ -1,9 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 
-import patientRoutes from "./routes/patient";
+import patientRoutes from "./routes/patientRoutes";
 import specialtyRoutes from "./routes/specialtyRoute";
 import doctorRoutes from "./routes/doctorRoute";
 import medicineRouter from "./routes/medicineRoute";
+import AuthRoutes from "./routes/authRoutes";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(doctorRoutes);
 new patientRoutes(app);
+new AuthRoutes(app)
 
 // notfound middleware
 app.use((req, res, next) => {

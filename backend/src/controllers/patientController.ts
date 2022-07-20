@@ -20,10 +20,8 @@ export default class patientController {
 				res.status(201).json({ status: true, message: 'patient added successfuly' });
 			})
 			.catch((err) => {
-				res.status(500).json({
-					status: false,
-					message: 'something went wrong,please try again',
-				});
+				err.status = 500;
+				err.message = 'something went wrong,please try again';
 				next(err);
 			});
 	}; // end addPatient
@@ -49,10 +47,8 @@ export default class patientController {
 				}
 			})
 			.catch((err) => {
-				res.status(500).json({
-					status: false,
-					message: 'something went wrong,please try again',
-				});
+				err.status = 500;
+				err.message = 'something went wrong,please try again';
 				next(err);
 			});
 	}; // end updatePatient
@@ -75,10 +71,8 @@ export default class patientController {
 				}
 			})
 			.catch((err) => {
-				res.status(500).json({
-					status: false,
-					message: 'something went wrong,please try again',
-				});
+				err.status = 500;
+				err.message = 'something went wrong,please try again';
 				next(err);
 			});
 	}; // end remove patient
@@ -98,23 +92,25 @@ export default class patientController {
 					});
 				else {
 					// get patient appointment
-					await Appointment.find({ patientId: req.body.patientId }).then(
-						(appointments) => {
+					await Appointment.find({ patientId: req.body.patientId })
+						.sort({ date: -1 })
+						.then((appointments) => {
 							appointmentsArr = appointments;
-						}
-					);
+						});
 
 					// get patient prescriptions
-					await Prescription.find({ patientId: req.body.patiendId }).then(
-						(prescriptions) => {
+					await Prescription.find({ patientId: req.body.patiendId })
+						.sort({ date: -1 })
+						.then((prescriptions) => {
 							prescriptionsArr = prescriptions;
-						}
-					);
+						});
 
 					// get patient invoices
-					await Invoice.find({ patientId: req.body.patiendId }).then((invoices) => {
-						invoicesArr = invoices;
-					});
+					await Invoice.find({ patientId: req.body.patiendId })
+						.sort({ date: -1 })
+						.then((invoices) => {
+							invoicesArr = invoices;
+						});
 
 					res.status(200).json({
 						name: patient.name,
@@ -126,32 +122,33 @@ export default class patientController {
 					});
 				}
 			});
-		} catch (err) {
-			res.status(500).json({ success: false, error: 'Internal error' + err });
+		} catch (err: any) {
+			err.status = 500;
+			err.message = 'something went wrong,please try again';
 			next(err);
 		}
 	}; // end get patient data by id
 
-	public getPatientByname: RequestHandler = async (req, res, next) => {
-		try {
-			// get patient data
-			await Patient.find({ name: req.body.name }).then(async (patients) => {
-				if (!patients)
-					res.status(404).json({
-						success: false,
-						messgae: 'no patient found with this id',
-					});
-				else {
-					res.status(200).json({
-						patients: patients,
-					});
-				}
-			});
-		} catch (err) {
-			res.status(500).json({ success: false, error: 'Internal error' + err });
-			next(err);
-		}
-	}; // end get patient by name
+	// public getPatientByname: RequestHandler = async (req, res, next) => {
+	// 	try {
+	// 		// get patient data
+	// 		await Patient.find({ name: req.body.name }).then(async (patients) => {
+	// 			if (!patients)
+	// 				res.status(404).json({
+	// 					success: false,
+	// 					messgae: 'no patient found with this id',
+	// 				});
+	// 			else {
+	// 				res.status(200).json({
+	// 					patients: patients,
+	// 				});
+	// 			}
+	// 		});
+	// 	} catch (err) {
+	// 		res.status(500).json({ success: false, error: 'Internal error' + err });
+	// 		next(err);
+	// 	}
+	// }; // end get patient by name
 
 	public getAllPatient: RequestHandler = (req, res, next) => {
 		//only sort by name exist for patients
@@ -160,7 +157,7 @@ export default class patientController {
 			const parts: any[] = req.query.sortBy.toString().split(':');
 			sortByCreteria = parts[1] ? parts[1] : 1;
 		}
-		
+
 		Patient.find()
 			.sort({ name: sortByCreteria })
 			.then((patients) => {
@@ -170,10 +167,8 @@ export default class patientController {
 				});
 			})
 			.catch((err) => {
-				res.status(404).json({
-					success: false,
-					message: 'Bad request',
-				});
+				err.status = 500;
+				err.message = 'something went wrong,please try again';
 				next(err);
 			});
 	}; // end get all patient with sort
