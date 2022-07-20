@@ -53,6 +53,10 @@ const appointmentSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    invoiceId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Invoice",
+    },
   },
   { timestamps: true }
 );

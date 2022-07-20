@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Appointment, appointmentDocument } from "../models/Appointment";
-import { Doctor } from "../models/doctor";
-import moment, { Moment } from "moment";
+import Doctor from "../models/doctor";
+import moment from "moment";
 
 export default class AppointmentController {
   constructor() {}

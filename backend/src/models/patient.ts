@@ -2,30 +2,15 @@ import mongoose from 'mongoose';
 
 export type patientDocument = mongoose.Document & {
 	_id: mongoose.Types.ObjectId;
-	patientId: mongoose.Types.ObjectId;
-	name: {
-		firstname: string;
-		lastname: string;
-	};
+	name: string;
 	email: string;
 	phone: string;
+	haveInsurance:boolean;
+	insuranceCompany?:string;
+	insuranceDiscount?:number;
 	createdAt: Date;
 	updatedAt: Date;
 };
-
-const nameSchema = new mongoose.Schema(
-	{
-		firstname: {
-			type: String,
-			required: true,
-		},
-		lastname: {
-			type: String,
-			required: true,
-		},
-	},
-	{ _id: false }
-);
 
 const patientSchema = new mongoose.Schema({
 	_id: {
@@ -33,13 +18,8 @@ const patientSchema = new mongoose.Schema({
 		required: true,
 		auto: true,
 	},
-	patientId: {
-		type: mongoose.Types.ObjectId,
-		required: true,
-		ref: 'User',
-	},
 	name: {
-		type: nameSchema,
+		type: String,
 		required: true,
 	},
 	email: {
@@ -49,6 +29,19 @@ const patientSchema = new mongoose.Schema({
 	phone: {
 		type: String,
 		required: true,
+	},
+	haveInsurance: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
+	insuranceCompany: {
+		type: String,
+		required: false,
+	},
+	insuranceDiscount: {
+		type: Number,
+		required: false,
 	},
 });
 
