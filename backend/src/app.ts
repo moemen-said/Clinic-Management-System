@@ -14,7 +14,7 @@ app.use(presRouter);
 app.use(medicineRouter);
 app.use(specialtyRoutes);
 app.use(doctorRoutes);
-// new patientRoutes(app);
+new patientRoutes(app);
 
 // notfound middleware
 app.use((req, res, next) => {
